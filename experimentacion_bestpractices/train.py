@@ -138,6 +138,7 @@ def main():
             print(f"{name.upper()}: MAE={metrics_results['mae']:.3f} | "
                   f"RMSE={metrics_results['rmse']:.3f} | R²={metrics_results['r2']:.3f}")
         predictions = model.predict(X_test)
+        # Creacion de gráfica en artefactos
         with TemporaryDirectory() as tmp:
                     figure_path = Path(tmp) / "reales_vs_predichos.png"
                     fig, ax = plt.subplots(figsize=(6, 5))
@@ -151,7 +152,6 @@ def main():
                     fig.savefig(figure_path, dpi=150)
                     plt.close(fig)
                     mlflow.log_artifact(str(figure_path), artifact_path="graficas")
-        # Incluye el preprocesamiento y el estimador entrenado
         mlflow.sklearn.log_model(sk_model=model, name="modelo", serialization_format="cloudpickle")
     
 if __name__ == "__main__":
